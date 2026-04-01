@@ -6,6 +6,8 @@ readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
     "httpx>=0.28.1",
+    "langchain>=1.2.14",
+    "langchain-openai>=1.1.12",
     "loguru>=0.7.3",
     "pydantic>=2.12.5",
     "pyyaml>=6.0.3",

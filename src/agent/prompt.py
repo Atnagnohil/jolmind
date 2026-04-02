@@ -1,4 +1,5 @@
 from src.agent.tools import get_enabled_tools
+from src.utils import logger
 
 
 def _build_tools_section() -> str:
@@ -31,4 +32,4 @@ def get_agent_prompt() -> str:
 """
 
 
-print(get_agent_prompt())
+logger.debug(f"系统提示词：\n{get_agent_prompt()}")

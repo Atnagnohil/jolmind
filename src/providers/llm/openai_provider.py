@@ -22,7 +22,7 @@ class OpenAIProvider(LLMProvider):
             self.config.base_url + self.MODELS_URI,
             headers={"Authorization": f"Bearer {self.config.api_key}"},
         )
-        return [model.id for model in response.json().data]
+        return [model["id"] for model in response.json()["data"]]
 
     def get_model(self, model: str | None = None, max_tokens: int | None = None) -> BaseChatModel:
         """获取模型"""

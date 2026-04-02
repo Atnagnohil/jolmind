@@ -61,6 +61,18 @@ class TavilyConfig(BaseModel):
     api_key: str = ""
 
 
+# Web 服务配置
+class WebConfig(BaseModel):
+    host: str = "0.0.0.0"
+    port: int = 8000
+    cors_origins: list[str] = ["*"]
+
+
+# 数据库配置
+class DbConfig(BaseModel):
+    url: str = "mysql+pymysql://root:password@localhost:3306/jolmind?charset=utf8mb4"
+
+
 # 应用总配置
 class AppConfig(BaseModel):
     llm: LLMConfig
@@ -68,6 +80,8 @@ class AppConfig(BaseModel):
     memory: MemoryConfig
     files: FilesConfig = FilesConfig()
     tavily: TavilyConfig = TavilyConfig()
+    web: WebConfig = WebConfig()
+    db: DbConfig = DbConfig()
     langsmith: LangSmithConfig = LangSmithConfig()
 
 

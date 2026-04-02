@@ -5,7 +5,9 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "aiosqlite>=0.22.1",
     "beautifulsoup4>=4.14.3",
+    "fastapi>=0.135.3",
     "httpx>=0.28.1",
     "langchain>=1.2.14",
     "langchain-openai>=1.1.12",
@@ -13,9 +15,12 @@ dependencies = [
     "langsmith>=0.7.24",
     "loguru>=0.7.3",
     "pydantic>=2.12.5",
+    "pymysql>=1.1.2",
     "pyyaml>=6.0.3",
+    "sqlalchemy>=2.0.48",
     "tavily-python>=0.7.23",
     "tzdata>=2025.3",
+    "uvicorn>=0.42.0",
 ]
 
 [[tool.uv.index]]

@@ -23,3 +23,6 @@ logs/
 
 # config
 config.yaml
+
+# db
+*.db

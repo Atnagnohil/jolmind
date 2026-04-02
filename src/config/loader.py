@@ -1,8 +1,10 @@
 from __future__ import annotations
-from typing import Dict
-from pydantic import BaseModel
-import yaml
+
 from pathlib import Path
+from typing import Dict
+
+import yaml
+from pydantic import BaseModel
 
 
 # 单个提供商配置
@@ -35,14 +37,43 @@ class LoggerConfig(BaseModel):
     console: bool
 
 
+# 记忆配置
+class MemoryConfig(BaseModel):
+    # sqlite 数据库路径
+    sqlite_path: str
+
+
+# LangSmith 追踪配置
+class LangSmithConfig(BaseModel):
+    enabled: bool = False
+    api_key: str = ""
+    project: str = "jolmind"
+    endpoint: str = "https://api.smith.langchain.com"
+
+
+# 文件工具配置
+class FilesConfig(BaseModel):
+    workspace: str = "~/jolmind_files"
+
+
+# Tavily 搜索配置
+class TavilyConfig(BaseModel):
+    api_key: str = ""
+
+
 # 应用总配置
 class AppConfig(BaseModel):
     llm: LLMConfig
     logger: LoggerConfig
+    memory: MemoryConfig
+    files: FilesConfig = FilesConfig()
+    tavily: TavilyConfig = TavilyConfig()
+    langsmith: LangSmithConfig = LangSmithConfig()
 
 
 def load_config(path: str = "config.yaml") -> AppConfig:
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     return AppConfig.model_validate(raw)
+
 
 config = load_config()

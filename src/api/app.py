@@ -8,11 +8,13 @@ from src.api.routers import chat, health, messages, providers, sessions, tool_ca
 from src.config import config
 from src.utils.langsmith import init_langsmith
 from src.utils.logger import logger
+from src.utils.logging_setup import setup_logging
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """应用生命周期：启动初始化 / 关闭释放资源。"""
+    setup_logging()
     init_langsmith()
     await SaverFactory.open()
     logger.info("Jolmind 启动")

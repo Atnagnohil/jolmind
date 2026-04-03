@@ -9,7 +9,7 @@ _MAX_CHARS = 4000
 
 @register_tool
 def fetch_webpage(url: str) -> str:
-    """抓取指定网页的正文内容。
+    """抓取指定网页的正文内容，当需要根据web搜索工具进一步查看详情时，请使用这个工具。
 
     Args:
         url: 要抓取的网页 URL。

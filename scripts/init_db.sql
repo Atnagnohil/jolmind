@@ -70,7 +70,7 @@ CREATE TABLE chat_message
     id           BIGINT UNSIGNED  NOT NULL AUTO_INCREMENT COMMENT '消息主键ID',
     user_id      BIGINT UNSIGNED  NOT NULL COMMENT '关联用户ID',
     session_id   CHAR(36)         NOT NULL COMMENT '关联会话ID',
-    role         TINYINT UNSIGNED NOT NULL COMMENT '消息角色 0-user 1-assistant 2-tool',
+    role         TINYINT UNSIGNED NOT NULL COMMENT '消息角色 0-user 1-assistant 2-tool 3-think',
     content      TEXT             NOT NULL COMMENT '消息内容',
     tool_call_id BIGINT UNSIGNED           DEFAULT NULL COMMENT '关联工具调用日志ID（role=tool时有值）',
     token_count  INT UNSIGNED     NOT NULL DEFAULT 0 COMMENT '消息token数',

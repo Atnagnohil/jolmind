@@ -70,7 +70,7 @@ class ChatMessage(Base):
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=True, comment="消息主键ID")
     user_id: Mapped[int] = mapped_column(BigInteger, nullable=False, comment="关联用户ID")
     session_id: Mapped[str] = mapped_column(String(36), nullable=False, comment="关联会话ID")
-    role: Mapped[int] = mapped_column(SmallInteger, nullable=False, comment="消息角色 0-user 1-assistant 2-tool")
+    role: Mapped[int] = mapped_column(SmallInteger, nullable=False, comment="消息角色 0-user 1-assistant 2-tool 3-thinking")
     content: Mapped[str] = mapped_column(Text, nullable=False, comment="消息内容")
     tool_call_id: Mapped[int | None] = mapped_column(BigInteger, nullable=True, comment="关联工具调用日志ID")
     token_count: Mapped[int] = mapped_column(Integer, nullable=False, default=0, comment="消息token数")

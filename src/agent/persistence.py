@@ -10,6 +10,25 @@ from src.db.crud.tool_call_log_crud import create_tool_call_log
 ROLE_USER = 0
 ROLE_ASSISTANT = 1
 ROLE_TOOL = 2
+ROLE_THINKING = 3
+
+
+def persist_thinking(
+    db: Session,
+    user_id: int,
+    session_id: str,
+    thinking: str,
+) -> None:
+    """将 think 节点的推理内容持久化到数据库。"""
+    if not thinking:
+        return
+    create_message(
+        db,
+        user_id=user_id,
+        session_id=session_id,
+        role=ROLE_THINKING,
+        content=thinking,
+    )
 
 
 def persist_messages(
@@ -19,9 +38,11 @@ def persist_messages(
     messages: list[Any],
     start_time: float,
     existing_ids: set[str] | None = None,
+    thinking: str = "",
 ) -> None:
     """
     将 LangGraph 返回的消息链持久化到数据库，自动跳过已存在的消息。
+    thinking 内容会在第一条 AIMessage 之前插入。
 
     Args:
         db: 数据库 session。
@@ -30,9 +51,11 @@ def persist_messages(
         messages: agent.invoke 返回的 result["messages"]（全量历史）。
         start_time: 本次调用开始时间，用于计算工具耗时。
         existing_ids: 上一轮已持久化的消息 ID 集合，用于去重。
+        thinking: think 节点输出的推理内容，存于第一条 AIMessage 之前。
     """
     existing_ids = existing_ids or set()
     tool_call_map: dict[str, int] = {}
+    thinking_saved = False
 
     for msg in messages:
         # 跳过历史轮次已存储的消息
@@ -50,6 +73,11 @@ def persist_messages(
             )
 
         elif isinstance(msg, AIMessage):
+            # 在第一条 AIMessage 前插入 thinking
+            if not thinking_saved:
+                persist_thinking(db, user_id, session_id, thinking)
+                thinking_saved = True
+
             if msg.tool_calls:
                 for tc in msg.tool_calls:
                     log = create_tool_call_log(

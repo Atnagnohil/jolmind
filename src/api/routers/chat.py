@@ -1,3 +1,4 @@
+import asyncio
 import time
 from typing import AsyncGenerator
 
@@ -7,9 +8,11 @@ from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from src.agent.agent_builder import build_agent
+from src.agent.naming import auto_name_session
 from src.agent.persistence import collect_message_ids, persist_messages
 from src.api.deps import get_db
 from src.api.schemas import Response
+from src.db.crud import update_session
 
 router = APIRouter(prefix="/chat", tags=["对话"])
 
@@ -42,6 +45,7 @@ async def chat(body: ChatRequest, db: Session = Depends(get_db)):
             config=cfg,
         )
         persist_messages(db, body.user_id, body.session_id, result["messages"], start, existing_ids)
+        asyncio.create_task(auto_name_session(db, body.session_id, body.message))
         reply = result["messages"][-1].content
         return Response.ok(ChatResponse(session_id=body.session_id, reply=reply))
     except Exception as e:
@@ -73,6 +77,7 @@ async def chat_stream(body: ChatRequest, db: Session = Depends(get_db)):
             final_state = await agent.aget_state(cfg)
             persist_messages(db, body.user_id, body.session_id, final_state.values.get("messages", []), start,
                              existing_ids)
+            asyncio.create_task(auto_name_session(db, body.session_id, body.message))
             yield "data: [DONE]\n\n"
         except Exception as e:
             yield f"data: [ERROR] {e}\n\n"

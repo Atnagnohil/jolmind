@@ -1,0 +1,66 @@
+# ============================================================
+# JolMind 配置文件示例
+# 复制此文件为 config.yaml 并按需修改
+# ============================================================
+
+# LLM 大模型配置
+llm:
+  # 默认使用的 provider 名称，需与下方 providers 中的 key 对应
+  default: 34ku
+
+  providers:
+    # SiliconFlow 平台
+    siliconflow:
+      type: openai # 接口类型，目前支持 openai 兼容格式
+      base_url: https://api.siliconflow.cn/v1
+      api_key: sk-your-siliconflow-api-key
+      default: Qwen/Qwen3.5-27B # 该 provider 默认使用的模型
+
+    # NVIDIA NIM 平台
+    nvidia:
+      type: openai
+      base_url: https://integrate.api.nvidia.com/v1
+      api_key: nvapi-your-nvidia-api-key
+      default: minimaxai/minimax-m2.1
+
+    # 其他 provider
+
+# 日志配置（基于 loguru）
+logger:
+  path: logs # 日志文件存放目录
+  level: DEBUG # 日志级别：DEBUG / INFO / WARNING / ERROR
+  rotation: 100 MB # 单个日志文件最大大小，超出后自动轮转
+  retention: 14 days # 日志保留时长
+  compression: zip # 轮转后的压缩格式
+  console: true # 是否同时输出到控制台
+
+# 记忆模块配置
+memory:
+  sqlite_path: memory.db # SQLite 数据库文件路径（相对于项目根目录）
+
+# 文件工作区配置
+files:
+  workspace: D:\coding1\jolmind # Agent 可访问的本地工作区根目录
+
+# Tavily 搜索 API
+tavily:
+  api_key: tvly-your-tavily-api-key
+
+# 数据库配置（MySQL）
+db:
+  # 格式：dialect+driver://user:password@host:port/dbname?options
+  url: mysql+pymysql://root:your-password@localhost:3306/jolmind?charset=utf8mb4
+
+# Web 服务配置
+web:
+  host: 0.0.0.0 # 监听地址，0.0.0.0 表示监听所有网卡
+  port: 8080 # 监听端口
+  cors_origins:
+    - "*" # 允许的跨域来源，生产环境建议改为具体域名
+
+# LangSmith 链路追踪（可选）
+langsmith:
+  enabled: false # 是否启用
+  api_key: lsv2_pt_your-langsmith-api-key
+  project: jolmind # LangSmith 项目名称
+  endpoint: https://api.smith.langchain.com

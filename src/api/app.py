@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src.agent.memory import SaverFactory
-from src.api.routers import chat, health, messages, providers, sessions, tool_call_logs, users
+from src.api.routers import chat, health, messages, providers, sessions, tool_call_logs, tts, users
 from src.config import config
 from src.utils.langsmith import init_langsmith
 from src.utils.logger import logger
@@ -46,5 +46,6 @@ def create_app() -> FastAPI:
     app.include_router(tool_call_logs.router)
     app.include_router(providers.router)
     app.include_router(chat.router)
+    app.include_router(tts.router)
 
     return app

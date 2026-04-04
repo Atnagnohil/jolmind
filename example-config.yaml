@@ -46,6 +46,20 @@ files:
 tavily:
   api_key: tvly-your-tavily-api-key
 
+# TTS 语音合成配置
+tts:
+  default: xfyun # 默认使用的 provider 名称
+  providers:
+    xfyun:
+      type: xfyun
+      app_id: your-xfyun-appid
+      api_key: your-xfyun-apikey
+      api_secret: your-xfyun-apisecret
+      extra:
+        vcn: x4_lingxiaoxuan_oral # 发音人
+        encoding: lame # 音频格式（lame=mp3）
+        sample_rate: "24000" # 采样率
+
 # 数据库配置（MySQL）
 db:
   # 格式：dialect+driver://user:password@host:port/dbname?options

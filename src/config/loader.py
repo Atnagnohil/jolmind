@@ -61,6 +61,21 @@ class TavilyConfig(BaseModel):
     api_key: str = ""
 
 
+# 单个 TTS 提供商配置
+class TTSProviderConfig(BaseModel):
+    type: str
+    app_id: str = ""
+    api_key: str = ""
+    api_secret: str = ""
+    extra: Dict[str, str] = {}
+
+
+# TTS 整体配置
+class TTSConfig(BaseModel):
+    default: str = ""
+    providers: Dict[str, TTSProviderConfig] = {}
+
+
 # Web 服务配置
 class WebConfig(BaseModel):
     host: str = "0.0.0.0"
@@ -80,6 +95,7 @@ class AppConfig(BaseModel):
     memory: MemoryConfig
     files: FilesConfig = FilesConfig()
     tavily: TavilyConfig = TavilyConfig()
+    tts: TTSConfig = TTSConfig()
     web: WebConfig = WebConfig()
     db: DbConfig = DbConfig()
     langsmith: LangSmithConfig = LangSmithConfig()
